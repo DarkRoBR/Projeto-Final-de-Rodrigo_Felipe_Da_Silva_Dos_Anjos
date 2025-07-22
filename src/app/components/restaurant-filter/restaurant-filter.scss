@@ -1,0 +1,222 @@
+.restaurant-filters {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--box-shadow);
+  margin-bottom: 2rem;
+}
+
+.search-section {
+  .search-container {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .search-input {
+    border: 2px solid #e9ecef;
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    transition: var(--transition);
+
+    &:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+    }
+  }
+
+  .input-group-text {
+    background: transparent;
+    border: 2px solid #e9ecef;
+    border-right: none;
+    border-radius: 25px 0 0 25px;
+    color: #6c757d;
+  }
+
+  .clear-btn {
+    border: 2px solid #e9ecef;
+    border-left: none;
+    border-radius: 0 25px 25px 0;
+    background: transparent;
+    color: #6c757d;
+    transition: var(--transition);
+
+    &:hover {
+      background: #f8f9fa;
+      color: var(--danger-color);
+    }
+  }
+}
+
+.category-filters {
+  .filter-title {
+    color: var(--dark-color);
+    font-weight: 600;
+  }
+
+  .clear-filters-btn {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 20px;
+    transition: var(--transition);
+
+    &:hover {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      color: white;
+    }
+  }
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  background: white;
+  position: relative;
+
+  &:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  &.active {
+    border-color: var(--primary-color);
+    background: rgba(255, 107, 53, 0.05);
+    
+    .category-name {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+  }
+
+  .category-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    width: 40px;
+    text-align: center;
+  }
+
+  .category-info {
+    flex: 1;
+
+    .category-name {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--dark-color);
+      transition: var(--transition);
+    }
+
+    .category-count {
+      color: #6c757d;
+      font-size: 0.875rem;
+    }
+  }
+
+  .category-badge {
+    background: var(--primary-color);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    min-width: 30px;
+    text-align: center;
+  }
+}
+
+.search-results {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+
+  .results-info {
+    color: #6c757d;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+
+    strong {
+      color: var(--primary-color);
+    }
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .restaurant-filters {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .category-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .category-item {
+    padding: 0.75rem;
+
+    .category-icon {
+      font-size: 1.25rem;
+      margin-right: 0.75rem;
+      width: 35px;
+    }
+
+    .category-name {
+      font-size: 0.9rem;
+    }
+
+    .category-count {
+      font-size: 0.8rem;
+    }
+  }
+
+  .search-section .search-container {
+    max-width: 100%;
+  }
+
+  .category-filters {
+    .d-flex {
+      flex-direction: column;
+      align-items: flex-start !important;
+      gap: 0.5rem;
+    }
+
+    .clear-filters-btn {
+      align-self: flex-end;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .search-section .input-group {
+    .input-group-text,
+    .search-input,
+    .clear-btn {
+      border-radius: 12px;
+    }
+
+    .input-group-text {
+      border-radius: 12px 0 0 12px;
+    }
+
+    .clear-btn {
+      border-radius: 0 12px 12px 0;
+    }
+  }
+}
+

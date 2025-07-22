@@ -1,0 +1,112 @@
+<div class="restaurants-page">
+  <app-header></app-header>
+  
+  <main class="container my-5">
+    <!-- Cabeçalho da Página -->
+    <div class="row">
+      <div class="col-12 text-center mb-5">
+        <h1 class="display-4 fw-bold text-gradient-primary mb-4">
+          Restaurantes
+        </h1>
+        <p class="lead text-muted">
+          Explore nossa seleção de {{ totalRestaurants }} restaurantes parceiros
+        </p>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="row">
+      <div class="col-12">
+        <app-restaurant-filter
+          (categorySelected)="onCategorySelected($event)"
+          (searchChanged)="onSearchChanged($event)">
+        </app-restaurant-filter>
+      </div>
+    </div>
+
+    <!-- Lista de Restaurantes -->
+    <div class="row">
+      <div class="col-12">
+        <div class="restaurants-grid" *ngIf="filteredRestaurants.length > 0">
+          <div class="row g-4">
+            <div class="col-lg-4 col-md-6" *ngFor="let restaurant of filteredRestaurants">
+              <app-restaurant-card 
+                [restaurant]="restaurant"
+                [isSelected]="isRestaurantSelected(restaurant.id)"
+                (favoriteToggled)="onFavoriteToggled($event)"
+                (restaurantViewed)="onRestaurantViewed($event)"
+                (compareToggled)="onCompareToggled($event)">
+              </app-restaurant-card>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estado Vazio -->
+        <div class="empty-state text-center py-5" *ngIf="filteredRestaurants.length === 0">
+          <div class="empty-icon mb-4">
+            <i class="fas fa-search fa-4x text-muted"></i>
+          </div>
+          <h3 class="empty-title mb-3">Nenhum restaurante encontrado</h3>
+          <p class="empty-description text-muted mb-4">
+            Não encontramos restaurantes que correspondam aos seus critérios de busca.
+            <br>Tente ajustar os filtros ou buscar por outros termos.
+          </p>
+          <button class="btn btn-hero" (click)="clearAllFilters()">
+            <i class="fas fa-refresh me-2"></i>
+            Limpar Filtros
+          </button>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state text-center py-5" *ngIf="isLoading">
+          <div class="spinner-custom mx-auto mb-3"></div>
+          <p class="text-muted">Carregando restaurantes...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estatísticas -->
+    <div class="row mt-5" *ngIf="filteredRestaurants.length > 0">
+      <div class="col-12">
+        <div class="restaurants-stats">
+          <div class="stats-container">
+            <div class="stat-item">
+              <div class="stat-number">{{ filteredRestaurants.length }}</div>
+              <div class="stat-label">Restaurantes</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ getOpenRestaurantsCount() }}</div>
+              <div class="stat-label">Abertos Agora</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ getFreeDeliveryCount() }}</div>
+              <div class="stat-label">Entrega Grátis</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ getAverageRating() }}</div>
+              <div class="stat-label">Avaliação Média</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Botão flutuante de comparação -->
+  <div class="compare-floating-btn" *ngIf="selectedRestaurants.length > 0" (click)="isCompareVisible = true">
+    <i class="fas fa-balance-scale"></i>
+    <span>{{ getCompareButtonText() }}</span>
+  </div>
+  
+  <!-- Componente de comparação -->
+  <app-restaurant-compare
+    [selectedRestaurants]="selectedRestaurants"
+    [isVisible]="isCompareVisible"
+    (removeRestaurant)="onRemoveFromCompare($event)"
+    (clearAll)="onClearAllCompare()"
+    (close)="onCloseCompare()">
+  </app-restaurant-compare>
+  
+  <app-footer></app-footer>
+</div>
+

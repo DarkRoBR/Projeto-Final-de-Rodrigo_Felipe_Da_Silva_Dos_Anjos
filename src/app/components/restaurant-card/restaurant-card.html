@@ -1,0 +1,107 @@
+<div class="restaurant-card card-custom h-100" [routerLink]="['/restaurante', restaurant.id]">
+  <!-- Imagem do restaurante -->
+  <div class="card-image-container position-relative">
+    <img 
+      [src]="restaurant.image" 
+      [alt]="restaurant.name"
+      class="card-img-top restaurant-image"
+      loading="lazy">
+    
+    <!-- Badge de status -->
+    <div class="status-badge" [ngClass]="getStatusClass()">
+      <i class="fas fa-circle me-1"></i>
+      {{ getStatusText() }}
+    </div>
+    
+    <!-- Badge de desconto -->
+    <div class="discount-badge" *ngIf="restaurant.discount">
+      <i class="fas fa-percent me-1"></i>
+      {{ restaurant.discount }}% OFF
+    </div>
+    
+    <!-- Botão de favorito -->
+    <button 
+      class="favorite-btn btn btn-sm"
+      [ngClass]="{'active': restaurant.isFavorite}"
+      (click)="toggleFavorite($event)">
+      <i class="fas fa-heart"></i>
+    </button>
+    
+    <!-- Botão de comparação -->
+    <button 
+      class="compare-btn btn btn-sm"
+      [ngClass]="{'active': isSelected}"
+      (click)="toggleCompare($event)">
+      <i class="fas fa-balance-scale"></i>
+    </button>
+  </div>
+
+  <div class="card-body d-flex flex-column">
+    <!-- Cabeçalho do card -->
+    <div class="card-header-info mb-2">
+      <h5 class="card-title mb-1 fw-bold">{{ restaurant.name }}</h5>
+      <p class="card-subtitle text-muted small mb-0">{{ restaurant.category }}</p>
+    </div>
+
+    <!-- Avaliação e informações -->
+    <div class="restaurant-info mb-3">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="rating d-flex align-items-center">
+          <i class="fas fa-star text-warning me-1"></i>
+          <span class="fw-medium">{{ restaurant.rating }}</span>
+          <span class="text-muted small ms-1">({{ restaurant.reviewCount }})</span>
+        </div>
+        <div class="delivery-time text-muted small">
+          <i class="fas fa-clock me-1"></i>
+          {{ restaurant.deliveryTime }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Preço e taxa de entrega -->
+    <div class="pricing-info mb-3">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="min-order">
+          <span class="text-muted small">Pedido mín.</span>
+          <div class="fw-medium">R$ {{ restaurant.minOrder | number:'1.2-2' }}</div>
+        </div>
+        <div class="delivery-fee text-end">
+          <span class="text-muted small">Entrega</span>
+          <div class="fw-medium" [ngClass]="restaurant.deliveryFee === 0 ? 'text-success' : ''">
+            {{ restaurant.deliveryFee === 0 ? 'Grátis' : 'R$ ' + (restaurant.deliveryFee | number:'1.2-2') }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tags de especialidades -->
+    <div class="specialties mb-3" *ngIf="restaurant.specialties && restaurant.specialties.length > 0">
+      <div class="d-flex flex-wrap gap-1">
+        <span 
+          class="badge specialty-badge" 
+          *ngFor="let specialty of restaurant.specialties.slice(0, 3)">
+          {{ specialty }}
+        </span>
+        <span 
+          class="badge specialty-badge more-badge" 
+          *ngIf="restaurant.specialties.length > 3">
+          +{{ restaurant.specialties.length - 3 }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Botão de ação -->
+    <div class="mt-auto">
+      <button class="btn btn-hero w-100" (click)="viewRestaurant($event)">
+        <i class="fas fa-eye me-2"></i>
+        Ver Cardápio
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="spinner-custom"></div>
+  </div>
+</div>
+

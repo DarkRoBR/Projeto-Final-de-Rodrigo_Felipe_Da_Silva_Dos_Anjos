@@ -1,0 +1,128 @@
+<section class="hero-section position-relative overflow-hidden">
+  <!-- Background com gradiente -->
+  <div class="hero-background"></div>
+  
+  <!-- Formas decorativas -->
+  <div class="hero-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+
+  <div class="container position-relative">
+    <div class="row align-items-center min-vh-75">
+      <!-- Conteúdo principal -->
+      <div class="col-lg-6 col-md-8 mx-auto text-center text-lg-start">
+        <div class="hero-content fade-in-up">
+          <h1 class="hero-title display-3 fw-bold mb-4">
+            Descubra os 
+            <span class="text-gradient-primary">Melhores</span>
+            <br>Restaurantes da Cidade
+          </h1>
+          
+          <p class="hero-subtitle lead mb-4 text-muted">
+            Compare preços, avaliações e encontre o restaurante perfeito para cada ocasião. 
+            Delivery rápido e seguro com nossos motoboys parceiros.
+          </p>
+
+          <!-- Barra de pesquisa principal -->
+          <div class="hero-search-container mb-4">
+            <div class="input-group hero-search">
+              <span class="input-group-text bg-white border-0">
+                <i class="fas fa-search text-primary"></i>
+              </span>
+              <input 
+                type="text" 
+                class="form-control border-0 shadow-none" 
+                placeholder="Digite o nome do restaurante ou tipo de comida..."
+                [(ngModel)]="searchQuery"
+                (keyup.enter)="onHeroSearch()">
+              <button 
+                class="btn btn-hero px-4" 
+                type="button"
+                (click)="onHeroSearch()">
+                <i class="fas fa-search me-2"></i>
+                Buscar
+              </button>
+            </div>
+          </div>
+
+          <!-- Botões de ação -->
+          <div class="hero-actions d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+            <button class="btn btn-hero btn-lg px-4" routerLink="/restaurantes">
+              <i class="fas fa-store me-2"></i>
+              Ver Restaurantes
+            </button>
+            <button class="btn btn-outline-primary btn-lg px-4" routerLink="/comparar">
+              <i class="fas fa-balance-scale me-2"></i>
+              Comparar Preços
+            </button>
+          </div>
+
+          <!-- Estatísticas -->
+          <div class="hero-stats row mt-5 text-center text-lg-start">
+            <div class="col-4">
+              <div class="stat-item">
+                <h3 class="stat-number text-gradient-primary fw-bold mb-1">500+</h3>
+                <p class="stat-label text-muted small mb-0">Restaurantes</p>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="stat-item">
+                <h3 class="stat-number text-gradient-primary fw-bold mb-1">50k+</h3>
+                <p class="stat-label text-muted small mb-0">Pedidos</p>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="stat-item">
+                <h3 class="stat-number text-gradient-primary fw-bold mb-1">4.8★</h3>
+                <p class="stat-label text-muted small mb-0">Avaliação</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Imagem ilustrativa -->
+      <div class="col-lg-6 d-none d-lg-block">
+        <div class="hero-image-container text-center">
+          <div class="hero-image-wrapper">
+            <div class="floating-card card-1">
+              <i class="fas fa-pizza-slice text-primary"></i>
+              <span>Pizza</span>
+            </div>
+            <div class="floating-card card-2">
+              <i class="fas fa-hamburger text-warning"></i>
+              <span>Burger</span>
+            </div>
+            <div class="floating-card card-3">
+              <i class="fas fa-ice-cream text-info"></i>
+              <span>Sobremesa</span>
+            </div>
+            <div class="hero-main-image">
+              <i class="fas fa-mobile-alt display-1 text-gradient-primary"></i>
+              <div class="phone-screen">
+                <div class="app-interface">
+                  <div class="app-header"></div>
+                  <div class="app-content">
+                    <div class="restaurant-item"></div>
+                    <div class="restaurant-item"></div>
+                    <div class="restaurant-item"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-indicator">
+    <div class="scroll-arrow">
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </div>
+</section>
+

@@ -1,0 +1,329 @@
+<!-- Modal de Login/Cadastro -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" [class.show]="isOpen" [style.display]="isOpen ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg">
+      <!-- Header do Modal -->
+      <div class="modal-header border-0 pb-0">
+        <div class="w-100 text-center">
+          <h4 class="modal-title text-gradient-primary fw-bold mb-2">
+            Bem-vindo ao DeliveryPro
+          </h4>
+          <p class="text-muted mb-0">
+            Entre ou cadastre-se para acessar todos os recursos da plataforma
+          </p>
+        </div>
+        <button 
+          type="button" 
+          class="btn-close" 
+          (click)="closeModal()"
+          aria-label="Fechar">
+        </button>
+      </div>
+
+      <!-- Corpo do Modal -->
+      <div class="modal-body px-4 py-3">
+        <!-- Tabs de Login/Cadastro -->
+        <ul class="nav nav-pills nav-justified mb-4" id="authTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button 
+              class="nav-link" 
+              [class.active]="activeTab === 'login'"
+              (click)="setActiveTab('login')"
+              type="button">
+              <i class="fas fa-sign-in-alt me-2"></i>
+              Entrar
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button 
+              class="nav-link" 
+              [class.active]="activeTab === 'register'"
+              (click)="setActiveTab('register')"
+              type="button">
+              <i class="fas fa-user-plus me-2"></i>
+              Cadastrar
+            </button>
+          </li>
+        </ul>
+
+        <!-- Conteúdo das Tabs -->
+        <div class="tab-content">
+          <!-- Tab de Login -->
+          <div class="tab-pane fade" [class.show]="activeTab === 'login'" [class.active]="activeTab === 'login'">
+            <form [formGroup]="loginForm" (ngSubmit)="onLogin()" novalidate>
+              <div class="row">
+                <div class="col-12">
+                  <!-- Email -->
+                  <div class="mb-3">
+                    <label for="loginEmail" class="form-label fw-medium">Email</label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-light border-end-0">
+                        <i class="fas fa-envelope text-muted"></i>
+                      </span>
+                      <input 
+                        type="email" 
+                        class="form-control border-start-0" 
+                        id="loginEmail"
+                        placeholder="seu@email.com"
+                        formControlName="email"
+                        [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                    </div>
+                    <div class="invalid-feedback" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                      <small *ngIf="loginForm.get('email')?.errors?.['required']">Email é obrigatório</small>
+                      <small *ngIf="loginForm.get('email')?.errors?.['email']">Email inválido</small>
+                    </div>
+                  </div>
+
+                  <!-- Senha -->
+                  <div class="mb-4">
+                    <label for="loginPassword" class="form-label fw-medium">Senha</label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-light border-end-0">
+                        <i class="fas fa-lock text-muted"></i>
+                      </span>
+                      <input 
+                        [type]="showPassword ? 'text' : 'password'" 
+                        class="form-control border-start-0 border-end-0" 
+                        id="loginPassword"
+                        placeholder="Sua senha"
+                        formControlName="password"
+                        [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                      <button 
+                        class="btn btn-outline-secondary border-start-0" 
+                        type="button"
+                        (click)="togglePasswordVisibility()">
+                        <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+                      </button>
+                    </div>
+                    <div class="invalid-feedback" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                      <small *ngIf="loginForm.get('password')?.errors?.['required']">Senha é obrigatória</small>
+                      <small *ngIf="loginForm.get('password')?.errors?.['minlength']">Senha deve ter no mínimo 6 caracteres</small>
+                    </div>
+                  </div>
+
+                  <!-- Botão de Login -->
+                  <button 
+                    type="submit" 
+                    class="btn btn-hero w-100 py-3 fw-bold"
+                    [disabled]="loginForm.invalid || isLoading">
+                    <span *ngIf="!isLoading">
+                      <i class="fas fa-sign-in-alt me-2"></i>
+                      Entrar
+                    </span>
+                    <span *ngIf="isLoading">
+                      <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                      Entrando...
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Tab de Cadastro -->
+          <div class="tab-pane fade" [class.show]="activeTab === 'register'" [class.active]="activeTab === 'register'">
+            <form [formGroup]="registerForm" (ngSubmit)="onRegister()" novalidate>
+              <div class="row">
+                <!-- Tipo de Conta -->
+                <div class="col-12 mb-3">
+                  <label class="form-label fw-medium">Tipo de Conta</label>
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <input 
+                        type="radio" 
+                        class="btn-check" 
+                        name="userType" 
+                        id="customer" 
+                        value="customer"
+                        formControlName="userType">
+                      <label class="btn btn-outline-primary w-100 py-3" for="customer">
+                        <i class="fas fa-user d-block mb-2"></i>
+                        <strong>Cliente</strong>
+                        <small class="d-block text-muted">Fazer pedidos</small>
+                      </label>
+                    </div>
+                    <div class="col-6">
+                      <input 
+                        type="radio" 
+                        class="btn-check" 
+                        name="userType" 
+                        id="restaurant" 
+                        value="restaurant"
+                        formControlName="userType">
+                      <label class="btn btn-outline-primary w-100 py-3" for="restaurant">
+                        <i class="fas fa-store d-block mb-2"></i>
+                        <strong>Restaurante</strong>
+                        <small class="d-block text-muted">Vender comida</small>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Nome -->
+                <div class="col-md-6 mb-3">
+                  <label for="registerName" class="form-label fw-medium">
+                    {{ registerForm.get('userType')?.value === 'restaurant' ? 'Nome do Responsável' : 'Nome Completo' }}
+                  </label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="registerName"
+                    [placeholder]="registerForm.get('userType')?.value === 'restaurant' ? 'João Silva' : 'Seu nome completo'"
+                    formControlName="name"
+                    [class.is-invalid]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+                  <div class="invalid-feedback" *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+                    <small *ngIf="registerForm.get('name')?.errors?.['required']">Nome é obrigatório</small>
+                  </div>
+                </div>
+
+                <!-- Nome do Restaurante (se aplicável) -->
+                <div class="col-md-6 mb-3" *ngIf="registerForm.get('userType')?.value === 'restaurant'">
+                  <label for="restaurantName" class="form-label fw-medium">Nome do Restaurante</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="restaurantName"
+                    placeholder="Pizza da Casa"
+                    formControlName="restaurantName"
+                    [class.is-invalid]="registerForm.get('restaurantName')?.invalid && registerForm.get('restaurantName')?.touched">
+                  <div class="invalid-feedback" *ngIf="registerForm.get('restaurantName')?.invalid && registerForm.get('restaurantName')?.touched">
+                    <small *ngIf="registerForm.get('restaurantName')?.errors?.['required']">Nome do restaurante é obrigatório</small>
+                  </div>
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-6 mb-3">
+                  <label for="registerEmail" class="form-label fw-medium">Email</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0">
+                      <i class="fas fa-envelope text-muted"></i>
+                    </span>
+                    <input 
+                      type="email" 
+                      class="form-control border-start-0" 
+                      id="registerEmail"
+                      placeholder="seu@email.com"
+                      formControlName="email"
+                      [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                  </div>
+                  <div class="invalid-feedback" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                    <small *ngIf="registerForm.get('email')?.errors?.['required']">Email é obrigatório</small>
+                    <small *ngIf="registerForm.get('email')?.errors?.['email']">Email inválido</small>
+                  </div>
+                </div>
+
+                <!-- Senha -->
+                <div class="col-md-6 mb-3">
+                  <label for="registerPassword" class="form-label fw-medium">Senha</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0">
+                      <i class="fas fa-lock text-muted"></i>
+                    </span>
+                    <input 
+                      [type]="showPassword ? 'text' : 'password'" 
+                      class="form-control border-start-0 border-end-0" 
+                      id="registerPassword"
+                      placeholder="Mínimo 6 caracteres"
+                      formControlName="password"
+                      [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+                    <button 
+                      class="btn btn-outline-secondary border-start-0" 
+                      type="button"
+                      (click)="togglePasswordVisibility()">
+                      <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+                    </button>
+                  </div>
+                  <div class="invalid-feedback" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+                    <small *ngIf="registerForm.get('password')?.errors?.['required']">Senha é obrigatória</small>
+                    <small *ngIf="registerForm.get('password')?.errors?.['minlength']">Senha deve ter no mínimo 6 caracteres</small>
+                  </div>
+                </div>
+
+                <!-- Termos de Uso -->
+                <div class="col-12 mb-4">
+                  <div class="form-check">
+                    <input 
+                      class="form-check-input" 
+                      type="checkbox" 
+                      id="acceptTerms"
+                      formControlName="acceptTerms"
+                      [class.is-invalid]="registerForm.get('acceptTerms')?.invalid && registerForm.get('acceptTerms')?.touched">
+                    <label class="form-check-label" for="acceptTerms">
+                      Li e aceito os 
+                      <a class="text-primary text-decoration-none">termos de uso</a> 
+                      e 
+                      <a class="text-primary text-decoration-none">política de privacidade</a>
+                    </label>
+                    <div class="invalid-feedback" *ngIf="registerForm.get('acceptTerms')?.invalid && registerForm.get('acceptTerms')?.touched">
+                      <small *ngIf="registerForm.get('acceptTerms')?.errors?.['required']">Você deve aceitar os termos de uso</small>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sistema de Motoboys (para clientes) -->
+                <div class="col-12 mb-4" *ngIf="registerForm.get('userType')?.value === 'customer'">
+                  <div class="card bg-light border-0">
+                    <div class="card-body p-3">
+                      <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-motorcycle text-primary me-2"></i>
+                        <h6 class="mb-0 fw-bold">Sistema de Motoboys</h6>
+                      </div>
+                      <p class="text-muted small mb-3">
+                        Nossos parceiros motoboys garantem entregas rápidas e seguras. 
+                        Quer ser um motoboy parceiro?
+                      </p>
+                      <button type="button" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-motorcycle me-1"></i>
+                        Quero ser Motoboy
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Botão de Cadastro -->
+                <div class="col-12">
+                  <button 
+                    type="submit" 
+                    class="btn btn-hero w-100 py-3 fw-bold"
+                    [disabled]="registerForm.invalid || isLoading">
+                    <span *ngIf="!isLoading">
+                      <i class="fas fa-user-plus me-2"></i>
+                      Criar Conta
+                    </span>
+                    <span *ngIf="isLoading">
+                      <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                      Criando conta...
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop do Modal -->
+<div class="modal-backdrop fade" [class.show]="isOpen" *ngIf="isOpen" (click)="closeModal()"></div>
+
+<!-- Toast de Notificações -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div 
+    class="toast" 
+    [class.show]="showToast"
+    role="alert" 
+    aria-live="assertive" 
+    aria-atomic="true">
+    <div class="toast-header" [class.bg-success]="toastType === 'success'" [class.bg-danger]="toastType === 'error'">
+      <i class="fas" [class.fa-check-circle]="toastType === 'success'" [class.fa-exclamation-circle]="toastType === 'error'" class="text-white me-2"></i>
+      <strong class="me-auto text-white">{{ toastType === 'success' ? 'Sucesso' : 'Erro' }}</strong>
+      <button type="button" class="btn-close btn-close-white" (click)="hideToast()"></button>
+    </div>
+    <div class="toast-body">
+      {{ toastMessage }}
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,82 @@
+<!-- Filtros de Restaurantes -->
+<div class="restaurant-filters">
+  <!-- Barra de Pesquisa -->
+  <div class="search-section mb-4">
+    <div class="search-container">
+      <div class="input-group">
+        <span class="input-group-text">
+          <i class="fas fa-search"></i>
+        </span>
+        <input 
+          type="text" 
+          class="form-control search-input" 
+          placeholder="Buscar restaurantes, pratos ou categorias..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()">
+        <button 
+          class="btn btn-outline-secondary clear-btn" 
+          type="button"
+          *ngIf="searchTerm"
+          (click)="clearSearch()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros por Categoria -->
+  <div class="category-filters">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h6 class="filter-title mb-0">
+        <i class="fas fa-filter me-2"></i>
+        Filtrar por Categoria
+      </h6>
+      <button 
+        class="btn btn-sm btn-outline-primary clear-filters-btn"
+        (click)="clearFilters()"
+        *ngIf="selectedCategory || searchTerm">
+        <i class="fas fa-times me-1"></i>
+        Limpar Filtros
+      </button>
+    </div>
+
+    <div class="category-grid">
+      <div 
+        class="category-item"
+        *ngFor="let category of categories"
+        [class.active]="selectedCategory === category.id || (selectedCategory === '' && category.id === 'all')"
+        (click)="onCategoryClick(category.id)">
+        
+        <div class="category-icon" [style.color]="category.color">
+          <i [class]="category.icon"></i>
+        </div>
+        
+        <div class="category-info">
+          <h6 class="category-name">{{ category.name }}</h6>
+          <small class="category-count">{{ category.count }} restaurantes</small>
+        </div>
+        
+        <div class="category-badge" *ngIf="category.count > 0">
+          {{ category.count }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resultados da Pesquisa -->
+  <div class="search-results" *ngIf="searchTerm || selectedCategory">
+    <div class="results-info">
+      <i class="fas fa-info-circle me-2"></i>
+      <span *ngIf="searchTerm && selectedCategory">
+        Resultados para "<strong>{{ searchTerm }}</strong>" na categoria "<strong>{{ getSelectedCategoryName() }}</strong>"
+      </span>
+      <span *ngIf="searchTerm && !selectedCategory">
+        Resultados para "<strong>{{ searchTerm }}</strong>"
+      </span>
+      <span *ngIf="!searchTerm && selectedCategory">
+        Categoria: <strong>{{ getSelectedCategoryName() }}</strong>
+      </span>
+    </div>
+  </div>
+</div>
+

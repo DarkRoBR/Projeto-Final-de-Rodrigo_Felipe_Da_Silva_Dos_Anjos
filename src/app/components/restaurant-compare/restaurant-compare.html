@@ -1,0 +1,153 @@
+<div class="compare-overlay" [class.visible]="isVisible" (click)="onClose()">
+  <div class="compare-container" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="compare-header">
+      <h3>Comparar Restaurantes</h3>
+      <div class="header-actions">
+        <button class="clear-all-btn" (click)="onClearAll()" *ngIf="selectedRestaurants.length > 0">
+          <i class="fas fa-trash"></i>
+          Limpar Tudo
+        </button>
+        <button class="close-btn" (click)="onClose()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="compare-content" *ngIf="selectedRestaurants.length > 0; else emptyState">
+      <!-- Restaurant Cards -->
+      <div class="restaurants-row">
+        <div class="restaurant-card" *ngFor="let restaurant of selectedRestaurants; trackBy: trackByRestaurantId">
+          <button class="remove-btn" (click)="onRemoveRestaurant(restaurant.id)">
+            <i class="fas fa-times"></i>
+          </button>
+          
+          <div class="restaurant-image">
+            <img [src]="restaurant.image" [alt]="restaurant.name" />
+            <div class="restaurant-status" [class.open]="restaurant.isOpen">
+              {{ restaurant.isOpen ? 'Aberto' : 'Fechado' }}
+            </div>
+          </div>
+          
+          <div class="restaurant-info">
+            <h4>{{ restaurant.name }}</h4>
+            <p class="category">{{ restaurant.category }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison Table -->
+      <div class="comparison-table">
+        <!-- Rating Row -->
+        <div class="comparison-row">
+          <div class="row-label">
+            <i class="fas fa-star"></i>
+            Avaliação
+          </div>
+          <div class="row-values">
+            <div 
+              class="value-cell" 
+              *ngFor="let restaurant of selectedRestaurants; let i = index"
+              [ngClass]="getRatingClass()[i]"
+            >
+              <span class="rating">
+                <i class="fas fa-star"></i>
+                {{ restaurant.rating }}
+              </span>
+              <small>({{ restaurant.reviewCount }} avaliações)</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delivery Time Row -->
+        <div class="comparison-row">
+          <div class="row-label">
+            <i class="fas fa-clock"></i>
+            Tempo de Entrega
+          </div>
+          <div class="row-values">
+            <div 
+              class="value-cell" 
+              *ngFor="let restaurant of selectedRestaurants; let i = index"
+              [ngClass]="getDeliveryTimeClass()[i]"
+            >
+              {{ restaurant.deliveryTime }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Delivery Fee Row -->
+        <div class="comparison-row">
+          <div class="row-label">
+            <i class="fas fa-truck"></i>
+            Taxa de Entrega
+          </div>
+          <div class="row-values">
+            <div 
+              class="value-cell" 
+              *ngFor="let restaurant of selectedRestaurants; let i = index"
+              [ngClass]="getDeliveryFeeClass()[i]"
+            >
+              <span *ngIf="restaurant.deliveryFee === 0" class="free-delivery">Grátis</span>
+              <span *ngIf="restaurant.deliveryFee > 0">R$ {{ restaurant.deliveryFee | number:'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Min Order Row -->
+        <div class="comparison-row">
+          <div class="row-label">
+            <i class="fas fa-shopping-cart"></i>
+            Pedido Mínimo
+          </div>
+          <div class="row-values">
+            <div 
+              class="value-cell" 
+              *ngFor="let restaurant of selectedRestaurants; let i = index"
+              [ngClass]="getMinOrderClass()[i]"
+            >
+              R$ {{ restaurant.minOrder | number:'1.2-2' }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Specialties Row -->
+        <div class="comparison-row specialties-row">
+          <div class="row-label">
+            <i class="fas fa-utensils"></i>
+            Especialidades
+          </div>
+          <div class="row-values">
+            <div class="value-cell" *ngFor="let restaurant of selectedRestaurants">
+              <div class="specialties-list">
+                <span 
+                  class="specialty-tag" 
+                  *ngFor="let specialty of restaurant.specialties.slice(0, 3)"
+                >
+                  {{ specialty }}
+                </span>
+                <span 
+                  class="more-specialties" 
+                  *ngIf="restaurant.specialties.length > 3"
+                >
+                  +{{ restaurant.specialties.length - 3 }} mais
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <i class="fas fa-balance-scale"></i>
+        <h4>Nenhum restaurante selecionado</h4>
+        <p>Selecione até 3 restaurantes para comparar suas informações lado a lado.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
