@@ -1,0 +1,203 @@
+<!-- Página Home -->
+<div class="home-page">
+  <!-- Header -->
+  <app-header 
+    (loginModalRequested)="openLoginModal()"
+    (registerModalRequested)="openRegisterModal()">
+  </app-header>
+
+  <!-- Hero Section -->
+  <app-hero></app-hero>
+
+  <!-- Seção de Categorias -->
+  <section class="categories-section py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center mb-5">
+          <h2 class="section-title fw-bold mb-3">
+            Explore por <span class="text-gradient-primary">Categoria</span>
+          </h2>
+          <p class="section-subtitle text-muted">
+            Encontre exatamente o que você está procurando
+          </p>
+        </div>
+      </div>
+      
+      <div class="row g-4">
+        <div class="col-lg-2 col-md-4 col-6" *ngFor="let category of categories">
+          <div class="category-card text-center" (click)="selectCategory(category.id)">
+            <div class="category-icon mb-3">
+              <i [class]="category.icon" [style.color]="category.color"></i>
+            </div>
+            <h6 class="category-name fw-medium mb-1">{{ category.name }}</h6>
+            <small class="category-count text-muted">{{ category.count }} restaurantes</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção de Restaurantes em Destaque -->
+  <section class="featured-restaurants py-5 bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center mb-5">
+          <h2 class="section-title fw-bold mb-3">
+            Restaurantes em <span class="text-gradient-primary">Destaque</span>
+          </h2>
+          <p class="section-subtitle text-muted">
+            Os mais bem avaliados da sua região
+          </p>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6" *ngFor="let restaurant of featuredRestaurants">
+          <app-restaurant-card 
+            [restaurant]="restaurant"
+            (favoriteToggled)="onFavoriteToggled($event)"
+            (restaurantViewed)="onRestaurantViewed($event)">
+          </app-restaurant-card>
+        </div>
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-12 text-center">
+          <button class="btn btn-hero btn-lg px-5" routerLink="/restaurantes">
+            <i class="fas fa-store me-2"></i>
+            Ver Todos os Restaurantes
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção de Como Funciona -->
+  <section class="how-it-works py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center mb-5">
+          <h2 class="section-title fw-bold mb-3">
+            Como <span class="text-gradient-primary">Funciona</span>
+          </h2>
+          <p class="section-subtitle text-muted">
+            Simples, rápido e seguro
+          </p>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-3 col-md-6" *ngFor="let step of howItWorksSteps; let i = index">
+          <div class="step-card text-center">
+            <div class="step-number mb-3">{{ i + 1 }}</div>
+            <div class="step-icon mb-3">
+              <i [class]="step.icon"></i>
+            </div>
+            <h5 class="step-title fw-bold mb-3">{{ step.title }}</h5>
+            <p class="step-description text-muted">{{ step.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção de Estatísticas -->
+  <section class="stats-section py-5 bg-gradient-primary text-white">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-lg-3 col-md-6 mb-4" *ngFor="let stat of stats">
+          <div class="stat-item">
+            <div class="stat-icon mb-3">
+              <i [class]="stat.icon"></i>
+            </div>
+            <h3 class="stat-number fw-bold mb-2">{{ stat.number }}</h3>
+            <p class="stat-label mb-0">{{ stat.label }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção de Depoimentos -->
+  <section class="testimonials py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center mb-5">
+          <h2 class="section-title fw-bold mb-3">
+            O que nossos <span class="text-gradient-primary">Clientes</span> dizem
+          </h2>
+          <p class="section-subtitle text-muted">
+            Experiências reais de quem já usa nossa plataforma
+          </p>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6" *ngFor="let testimonial of testimonials">
+          <div class="testimonial-card h-100">
+            <div class="testimonial-content mb-4">
+              <div class="testimonial-rating mb-3">
+                <i class="fas fa-star" *ngFor="let star of [1,2,3,4,5]"></i>
+              </div>
+              <p class="testimonial-text">{{ testimonial.text }}</p>
+            </div>
+            <div class="testimonial-author d-flex align-items-center">
+              <img [src]="testimonial.avatar" [alt]="testimonial.name" class="testimonial-avatar me-3">
+              <div>
+                <h6 class="author-name fw-bold mb-1">{{ testimonial.name }}</h6>
+                <small class="author-role text-muted">{{ testimonial.role }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção de Newsletter -->
+  <section class="newsletter-section py-5 bg-light">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <div class="newsletter-content">
+            <div class="newsletter-icon mb-4">
+              <i class="fas fa-envelope-open text-gradient-primary"></i>
+            </div>
+            <h3 class="newsletter-title fw-bold mb-3">
+              Fique por dentro das <span class="text-gradient-primary">Novidades</span>
+            </h3>
+            <p class="newsletter-subtitle text-muted mb-4">
+              Receba ofertas exclusivas, novos restaurantes e promoções especiais
+            </p>
+            
+            <form class="newsletter-form" (ngSubmit)="onNewsletterSubmit()" [formGroup]="newsletterForm">
+              <div class="input-group newsletter-input">
+                <input 
+                  type="email" 
+                  class="form-control" 
+                  placeholder="Digite seu email"
+                  formControlName="email">
+                <button class="btn btn-hero" type="submit" [disabled]="newsletterForm.invalid">
+                  <i class="fas fa-paper-plane me-2"></i>
+                  Inscrever-se
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+
+  <!-- Modal de Login -->
+  <app-login-modal 
+    [isOpen]="showLoginModal"
+    (modalClosed)="closeLoginModal()"
+    (loginSuccess)="onLoginSuccess($event)"
+    (registerSuccess)="onRegisterSuccess($event)">
+  </app-login-modal>
+</div>
+

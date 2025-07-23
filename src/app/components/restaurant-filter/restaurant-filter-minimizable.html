@@ -1,0 +1,71 @@
+<div class="filter-container" [class.minimized]="isMinimized">
+  <!-- Botão de minimizar/maximizar -->
+  <div class="filter-toggle">
+    <button class="toggle-btn" (click)="toggleMinimized()">
+      <i class="fas" [class.fa-chevron-up]="!isMinimized" [class.fa-chevron-down]="isMinimized"></i>
+      <span>{{ isMinimized ? 'Mostrar Filtros' : 'Minimizar Filtros' }}</span>
+    </button>
+  </div>
+
+  <!-- Conteúdo dos filtros -->
+  <div class="filter-content" [class.hidden]="isMinimized">
+    <div class="row g-3">
+      <!-- Busca por texto -->
+      <div class="col-md-6">
+        <div class="search-box">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-search"></i>
+            </span>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Buscar restaurantes..."
+              [(ngModel)]="searchTerm"
+              (input)="onSearchChange()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtro por categoria -->
+      <div class="col-md-4">
+        <div class="category-filter">
+          <select 
+            class="form-select" 
+            [(ngModel)]="selectedCategory"
+            (change)="onCategoryChange(selectedCategory)">
+            <option value="">Todas as categorias</option>
+            <option *ngFor="let category of categories" [value]="category">
+              {{ category }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Botão limpar filtros -->
+      <div class="col-md-2">
+        <button 
+          class="btn btn-outline-secondary w-100" 
+          (click)="clearFilters()"
+          [disabled]="!searchTerm && !selectedCategory">
+          <i class="fas fa-times me-1"></i>
+          Limpar
+        </button>
+      </div>
+    </div>
+
+    <!-- Filtros rápidos -->
+    <div class="quick-filters mt-3">
+      <div class="d-flex flex-wrap gap-2">
+        <button 
+          class="btn btn-sm quick-filter-btn"
+          [class.active]="selectedCategory === category"
+          *ngFor="let category of categories.slice(0, 6)"
+          (click)="onCategoryChange(category)">
+          {{ category }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
